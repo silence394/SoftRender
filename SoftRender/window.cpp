@@ -1,14 +1,12 @@
 // Window.cpp 
 
 #include "windows.h"
+#include "soft3dlib.h"
 
 #define WINDOW_CLASS_NAME	L"SoftRender"
 #define WINDOW_TITLE		L"soft render app"
 #define WINDOW_WIDTH		320
 #define WINDOW_HEIGHT		240
-
-#define KEYDOWN(keycode)	((GetAsyncKeyState(keycode) & 0x8000 ) ? 1 : 0 )
-#define KEYUP(key)			((GetAsyncKeyState(keycode) & 0x8000 ) ? 1 : 0 )
 
 int GameInit(void *param = NULL);
 int GameShutdown(void *param = NULL);
