@@ -24,8 +24,10 @@ int gWidth, gHeight = 0;
 long gLPitch = 0;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-bool WindowInit( int w, int h );
+bool WindowInit(int w, int h);
 int GameMain();
+void DrawPixel(int x, int y, unsigned int color);
+void DrawLine(int x1, int y1, int x2, int y2, unsigned int color);
 
 int main()
 {
@@ -167,7 +169,7 @@ int GameMain()
 	{
 		for ( int x = 0; x < gWidth; x ++ )
 		{
-			gFrameBuffer[y][x] = 0xff000000;
+			DrawPixel(x, y, 0xff000000);
 		}
 	}
 
@@ -179,7 +181,7 @@ int GameMain()
 		int r = rand()%255;
 		int g = rand()%255;
 		int b = rand()%255;
-		gFrameBuffer[yy][xx] = 0xff<< 24 + r << 16 + g << 8 + b;
+		DrawPixel( xx, yy, 0xff<< 24 + r << 16 + g << 8 + b );
 	}
 	
 	HDC hdc = GetDC(gHwnd);
@@ -188,4 +190,35 @@ int GameMain()
 	
 	Sleep(30);
 	return 0;
+}
+
+void DrawPixel( int x, int y, unsigned int color )
+{
+	if ( x <= gWidth && y <= gHeight )
+	{
+		gFrameBuffer[y][x] = color;
+	}
+}
+
+void DrawLine(int x1, int y1, int x2, int y2, unsigned int color)
+{
+	if (x1 == x2)
+	{
+		int incy = y1 <= y2 ? 1 : -1;
+		while (y1 != y2)
+		{
+			DrawPixel( x1, y1, color );
+			y1 += incy;
+		}
+	}
+	else 
+	{
+		float k = (y1 - y2) / (x1 - x2);
+		while (y1 != y2)
+		{
+			
+
+		}
+	}
+
 }
