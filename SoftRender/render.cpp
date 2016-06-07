@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "math.h"
+#include "time.h"
 
 #include "windows.h"
 #include "tchar.h"
@@ -109,6 +110,7 @@ struct RenderDevice
 	float		fov;
 
 	uint		mRenderMethod;
+	uint		mElapse;
 };
 
 struct AmbientLight
@@ -359,6 +361,7 @@ void DeviceInit( RenderDevice* rd, int w, int h, unsigned char* fb )
 	rd->mWidth = (float) w;
 	rd->mHeight = (float) h;
 	rd->mRenderMethod = RenderMethod::texture;
+	rd->mElapse = 0;
 
 	{
 		char* ptr = (char*) malloc( w * h * 4 );
@@ -397,8 +400,17 @@ void DeviceInit( RenderDevice* rd, int w, int h, unsigned char* fb )
 	InitMaterial( );
 }
 
+uint lasttime = 0;
 int GameMain( )
 {
+	uint now = clock();
+	gRenderDevice.mElapse = now - lasttime;
+	lasttime = now;
+	TCHAR  buffer[256];
+	swprintf( buffer, L"%ls FPS = %d", WINDOW_TITLE, gRenderDevice.mElapse );
+	
+	SetWindowText( gHwnd, buffer);
+
 	//Clear framebuffer.
 	DeviceClear(&gRenderDevice);
 
@@ -579,12 +591,6 @@ void ComputePointLight( PointLight& pointlight, Material& material, const Vector
 		Reflect( r, normal, dir );
 
 		float temp = Vector3Dot( r, toeye );
-		if ( temp > 0.0f )
-		{
-			int a = 1;
-			int b = 2;
-		}
-
 		float spec = pow( max( Vector3Dot( r, toeye ), 0.0f ), material.power );
 		ColorDot( specular, pointlight.color, material.specular );
 		ColorMul( specular, spec );
@@ -780,23 +786,24 @@ void DrawScanline( RenderDevice* rd, Edge* aet, int scanline, const Vector3& nor
 
 					if ( rd->mRenderMethod & RenderMethod::texture )
 					{
-						int U = MID( (int) ( v.texture.u * 255.0f * invw + 0.5f ), 0, 255 );
-						int V = MID( (int) ( v.texture.v * 255.0f * invw + 0.5f ), 0, 255 );
+						int tu = (int) ( v.texture.u * 255.0f * invw + 0.5f );
+						int tv = (int) ( v.texture.v * 255.0f * invw + 0.5f );
+						int U = MID( tu, 0, 255 );
+						int V = MID( tv, 0, 255 );
 						
-						float temp = 1.0f / 255.0f;
 						Color c;
 
-						c.b = ( rd->mTexture[V][U] & 0xff ) * temp;
-						c.g = ( ( rd->mTexture[V][U] >> 8 ) & 0xff ) * temp;
-						c.r = ( ( rd->mTexture[V][U] >> 16 ) & 0xff ) * temp;
-						c.a = ( ( rd->mTexture[V][U] >> 24 ) & 0xff ) * temp;
+						c.b = ( rd->mTexture[V][U] & 0xff );
+						c.g = ( ( rd->mTexture[V][U] >> 8 ) & 0xff );
+						c.r = ( ( rd->mTexture[V][U] >> 16 ) & 0xff );
+						c.a = ( ( rd->mTexture[V][U] >> 24 ) & 0xff );
 						
 						ColorDot( c, lc );
 
 						int A = 255;
-						int R = (int) MID( ( c.r * 255.0f ), 0.0f, 255.0f );
-						int G = (int) MID( ( c.g * 255.0f ), 0.0f, 255.0f );
-						int B = (int) MID( ( c.b * 255.0f ), 0.0f, 255.0f );
+						int R = (int) MID( c.r, 0.0f, 255.0f );
+						int G = (int) MID( c.g, 0.0f, 255.0f );
+						int B = (int) MID( c.b, 0.0f, 255.0f );
 
 						DrawPixel(rd, j, scanline, ( A << 24 ) | ( R << 16 ) | ( G << 8 ) | B );
 					}
