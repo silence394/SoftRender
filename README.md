@@ -11,6 +11,7 @@ Gouraud shading：
 ![img](https://i.loli.net/2018/05/30/5b0e9d892f288.png)
 
 线框模式:
+
 ![img](https://i.loli.net/2018/05/30/5b0e9c511fd23.png)
 
 技术点：
