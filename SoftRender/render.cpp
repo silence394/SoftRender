@@ -211,28 +211,17 @@ void ResortAET( Edge* aet );
 void DrawScanline( RenderDevice* rd, Edge* aet, int scanline, const Vector3& normal );
 
 void DeviceClear( RenderDevice* rd );
-// 
-// Vertex gMesh[8] = {
-// 	{ {1.0f, 1.0f, 1.0f},	{0, 0}, {1.0f, 0.2f, 0.2f} },
-// 	{ {1.0f, 1.0f, -1.0f},	{0, 1}, {0.2f, 1.0f, 0.2f} },
-// 	{ {-1.0f, 1.0f, -1.0f}, {1, 1}, {0.2f, 0.2f, 1.0f} },
-// 	{ {-1.0f, 1.0f, 1.0f}, {1, 0}, {1.0f, 0.2f, 1.0f} },
-// 	{ {1.0f, -1.0f, 1.0f},	{0, 0}, {1.0f, 1.0f, 0.2f} },
-// 	{ {-1.0f, -1.0f, 1.0f}, {0, 1}, {0.2f, 1.0f, 0.3f} },
-// 	{ {-1.0f, -1.0f, -1.0f}, {1, 1}, {1.0f, 0.3f, 0.3f} },
-// 	{ {1.0f, -1.0f, -1.0f}, {1, 0}, {.2f, 1.0f, 1.0f} },
-// };
 
-Vertex gMesh[8] = {
-	{ {1.0f, 1.0f, 1.0f},	{0, 0}, {1.0f, 1.0f, 1.0f} },
-	{ {1.0f, 1.0f, -1.0f},	{0, 1}, {1.0f, 1.0f, 1.0f} },
-	{ {-1.0f, 1.0f, -1.0f}, {1, 1}, {1.0f,1.0f, 1.0f} },
-	{ {-1.0f, 1.0f, 1.0f}, {1, 0}, {1.0f, 1.0f, 1.0f} },
-	{ {1.0f, -1.0f, 1.0f},	{0, 0}, {1.0f, 1.0f, 1.0f} },
-	{ {-1.0f, -1.0f, 1.0f}, {0, 1}, {1.0f, 1.0f, 1.0f} },
-	{ {-1.0f, -1.0f, -1.0f}, {1, 1}, {1.0f, 1.0f, 1.0f} },
-	{ {1.0f, -1.0f, -1.0f}, {1, 0}, {1.0f, 1.0f, 1.0f} },
-};
+ Vertex gMesh[8] = {
+ 	{ {1.0f, 1.0f, 1.0f},	{0, 0}, {1.0f, 0.2f, 0.2f} },
+ 	{ {1.0f, 1.0f, -1.0f},	{0, 1}, {0.2f, 1.0f, 0.2f} },
+ 	{ {-1.0f, 1.0f, -1.0f}, {1, 1}, {0.2f, 0.2f, 1.0f} },
+ 	{ {-1.0f, 1.0f, 1.0f}, {1, 0}, {1.0f, 0.2f, 1.0f} },
+ 	{ {1.0f, -1.0f, 1.0f},	{0, 0}, {1.0f, 1.0f, 0.2f} },
+ 	{ {-1.0f, -1.0f, 1.0f}, {0, 1}, {0.2f, 1.0f, 0.3f} },
+ 	{ {-1.0f, -1.0f, -1.0f}, {1, 1}, {1.0f, 0.3f, 0.3f} },
+ 	{ {1.0f, -1.0f, -1.0f}, {1, 0}, {.2f, 1.0f, 1.0f} },
+ };
 
 RenderDevice gRenderDevice;
 int main( )
@@ -793,10 +782,10 @@ void DrawScanline( RenderDevice* rd, Edge* aet, int scanline, const Vector3& nor
 						
 						Color c;
 
-						c.b = ( rd->mTexture[V][U] & 0xff );
-						c.g = ( ( rd->mTexture[V][U] >> 8 ) & 0xff );
-						c.r = ( ( rd->mTexture[V][U] >> 16 ) & 0xff );
-						c.a = ( ( rd->mTexture[V][U] >> 24 ) & 0xff );
+						c.b = (float) ( rd->mTexture[V][U] & 0xff );
+						c.g = (float) ( ( rd->mTexture[V][U] >> 8 ) & 0xff );
+						c.r = (float) ( ( rd->mTexture[V][U] >> 16 ) & 0xff );
+						c.a = (float) ( ( rd->mTexture[V][U] >> 24 ) & 0xff );
 						
 						ColorDot( c, lc );
 
