@@ -1,5 +1,5 @@
 # SoftRender
-这个一个固定流水线的软件渲染器，在刚接触3D的时候模仿了 [skywind](https://github.com/skywind3000/mini3d), 非常精简，展示了如何绘制一个3D的物体。
+这是一个固定流水线的软件渲染器，在刚接触3D的时候模仿了 [skywind](https://github.com/skywind3000/mini3d), 非常精简，展示了如何绘制一个3D的物体。
 
 ## 效果图
 图片显示：
